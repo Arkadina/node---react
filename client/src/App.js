@@ -57,42 +57,36 @@ function App() {
     }, [isEditing]);
 
     function getData() {
-        try {
-            axios
-                .get(`${localhost}/users`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then((res) => {
-                    setData(res.data);
-                })
-                .catch((err) => {
-                    throw err;
-                });
-        } catch {
-            console.error("Não foi possível buscar os usuários.");
-        }
+        axios
+            .get(`${localhost}/users`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                setData(res.data);
+            })
+            .catch((err) => {
+                throw err;
+                console.error("Não foi possível buscar os usuários.");
+            });
     }
 
     function addUser(email, password, status) {
-        try {
-            axios
-                .post(`${localhost}/add`, {
-                    email,
-                    password,
-                    user_status: status,
-                })
-                .then((res) => {
-                    getData();
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        } catch (error) {
-            console.error("Não foi possível adicionar usuário.");
-        }
+        axios
+            .post(`${localhost}/add`, {
+                email,
+                password,
+                user_status: status,
+            })
+            .then((res) => {
+                getData();
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+                console.error("Não foi possível adicionar usuário.");
+            });
     }
 
     function handleOnSubmit(e) {
@@ -111,17 +105,22 @@ function App() {
     }
 
     function handleUpdateUser() {
-        try {
-            axios.put(`${localhost}/update/${userId}`, {
+        axios
+            .put(`${localhost}/update/${userId}`, {
                 email,
                 password,
                 user_status: status,
+            })
+            .then((res) => {
+                getData();
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+                console.error("Não foi possível atualizar usuário.");
             });
 
-            setIsEditing(false);
-        } catch (error) {
-            console.error("Não foi possível atualizar usuário.");
-        }
+        setIsEditing(false);
     }
 
     return (
